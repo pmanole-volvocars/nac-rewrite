@@ -2,10 +2,33 @@
   "name": "nac-rewrite",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "dev": "bun --watch ./src/index.ts",
+    "test": "bun test",
+    "check-all": "bunx biome check",
+    "check-all:fix": "bunx biome check --write",
+    "check-all:fix-unsafe": "bunx biome check --write --unsafe",
+    "check-staged": "bunx biome check --staged",
+    "check-staged:fix": "bunx biome check --staged --write",
+    "check-staged:fix-unsafe": "bunx biome check --staged --write --unsafe",
+    "check-changed": "bunx biome check --changed",
+    "check-changed:fix": "bunx biome check --changed --write",
+    "check-changed:fix-unsafe": "bunx biome check --changed --write --unsafe"
+  },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@effect/language-service": "^0.2.0",
     "@types/bun": "latest"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
-  }
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@effect/opentelemetry": "^0.44.0",
+    "@effect/platform-bun": "^0.57.0",
+    "effect": "^3.13.0"
+  },
+  "trustedDependencies": [
+    "@parcel/watcher"
+  ]
 }
