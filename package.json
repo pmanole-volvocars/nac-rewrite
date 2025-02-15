@@ -26,9 +26,8 @@
   "dependencies": {
     "@effect/opentelemetry": "^0.44.0",
     "@effect/platform-bun": "^0.57.0",
-    "effect": "^3.13.0"
+    "effect": "^3.13.0",
+    "@contentstack/delivery-sdk": "4.5.0"
   },
-  "trustedDependencies": [
-    "@parcel/watcher"
-  ]
+  "trustedDependencies": ["@parcel/watcher"]
 }
