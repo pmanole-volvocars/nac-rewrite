@@ -1,15 +1,25 @@
 # nac-rewrite
 
-To install dependencies:
+News & Comms BFF Rewrite in Effect-TS.
+
+## Getting Started
+
+### To install dependencies
 
 ```bash
 bun install
 ```
 
-To run:
+### To run
 
 ```bash
-bun run index.ts
+bun run src/index.ts
 ```
 
-This project was created using `bun init` in bun v1.2.2. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+### Run in watch mode
+
+```bash
+bun run --watch src/index.ts
+```
+
+Bun will watch for any files changing and restart the server when you save a change to disk.
