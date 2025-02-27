@@ -1,3 +1,4 @@
+import { Region } from "@contentstack/delivery-sdk"
 import { Config, type ConfigError, Effect, type Redacted } from "effect"
 
 export interface ContentstackConfig {
@@ -11,8 +12,8 @@ export interface ContentstackConfig {
   Environment: string
   /** Content Preview Token. Unique per Environment. */
   PreviewToken: Redacted.Redacted<string>
-  /** Content hosting region (us, eu, azure_na, azure_eu, gcp_na). */
-  Region: string
+  /** Content hosting region. */
+  Region: Region
 }
 
 // TODO: maybe can be replaced with Effect.Service instead of cached effect?
@@ -37,18 +38,13 @@ export const ContentstackConfig: Effect.Effect<ContentstackConfig, ConfigError.C
         PreviewToken: yield* Config.nonEmptyString("CS_NEWSANDCOMMS_PREVIEW_TOKEN").pipe(
           Config.redacted<string>,
         ),
-        Region: yield* Config.nonEmptyString("CS_NEWSANDCOMMS_REGION").pipe(
-          Config.map((value) => value.toLowerCase()),
-          Config.validate({
-            message: "Expected one of 'us', 'eu', 'azure_na', 'azure_eu', 'gcp_na'",
-            validation: (region) =>
-              region === "us" ||
-              region === "eu" ||
-              region === "azure_na" ||
-              region === "azure_eu" ||
-              region === "gcp_na",
-          }),
-        ),
+        Region: yield* Config.literal(
+          Region.US,
+          Region.EU,
+          Region.AZURE_NA,
+          Region.AZURE_EU,
+          Region.GCP_NA,
+        )("CS_NEWSANDCOMMS_REGION"),
       }
     }),
   ).pipe(

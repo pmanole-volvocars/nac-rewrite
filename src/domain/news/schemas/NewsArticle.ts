@@ -1,4 +1,4 @@
-import { Effect, Schema } from "effect"
+import { Effect, Schema, pipe } from "effect"
 import type { CsNewsEntry } from "src/shared/schemas/contentstack/CsNewsEntry"
 import { MappingFailure } from "src/shared/schemas/errors/MappingFailure"
 import { NewsAttachment } from "./NewsAttachment"
@@ -34,25 +34,17 @@ export class NewsArticle extends Schema.Class<NewsArticle>(T)({
 
       const id = yield* NewsIdFromString(entry.uid)
 
-      const categories: NewsCategory[] = []
-      if (entry.taxonomies) {
-        for (const taxonomy of entry.taxonomies)
-          categories.push(yield* NewsCategoryFromCsTaxonomy(taxonomy))
-      }
+      const categories = entry.taxonomies
+        ? yield* pipe(entry.taxonomies, Effect.forEach(NewsCategoryFromCsTaxonomy))
+        : []
+
+      const attachments = entry.attachments
+        ? yield* pipe(entry.attachments, Effect.forEach(NewsAttachment.fromBaseAsset))
+        : []
 
       try {
         const newsArticle = NewsArticle.make({
-          attachments: entry.attachments?.map((asset) => ({
-            contentType: asset.content_type,
-            fileName: asset.filename,
-            fileSize: asset.file_size,
-            id: asset.uid,
-            publishedAt: asset.publish_details?.time,
-            title: asset.title,
-            updatedAt: asset.updated_at,
-            url: asset.url,
-            version: asset._version,
-          })),
+          attachments,
           author: entry.head.author,
           body: entry.body.body_text,
           categories,

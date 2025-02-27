@@ -1,7 +1,7 @@
 import { HttpApiBuilder, HttpApiSwagger, HttpMiddleware } from "@effect/platform"
 import { BunHttpServer } from "@effect/platform-bun"
 import { Effect, Layer } from "effect"
-import { ContentstackClient } from "src/shared/services/ContentstackClient"
+import { ContentstackClient } from "src/shared/services/ContentstackClient/ContentstackClient"
 import { ApiLive } from "./ApiLive"
 import { LoggingLayer } from "./Logging"
 

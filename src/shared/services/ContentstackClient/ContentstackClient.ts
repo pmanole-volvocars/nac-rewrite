@@ -1,7 +1,7 @@
 import cs from "@contentstack/delivery-sdk"
 import { Effect, Redacted, pipe } from "effect"
 import { ContentstackConfig } from "src/config/ContentstackConfig"
-import { ContentstackClientError } from "./ContentstackClientError"
+import { BuildContentstackClientError } from "./errors/BuildContentstackClientError"
 
 /**
  * Contentstack Content Delivery API Client `Effect.Service` Singleton.
@@ -21,7 +21,7 @@ import { ContentstackClientError } from "./ContentstackClientError"
  *       const germanNewsEntries = client.contentType("news").entry().locale("de-de")
  *       return germanNewsEntries.query().find<{ uid: string, title: string }>()
  *     },
- *     catch: ContentstackClientError.fromError,
+ *     catch: BuildContentstackClientError.fromError,
  *   })
  * })
  */
@@ -33,6 +33,8 @@ export class ContentstackClient extends Effect.Service<ContentstackClient>()("Co
       Effect.try({
         try: () =>
           cs.stack({
+            branch: config.Branch,
+            region: config.Region,
             apiKey: Redacted.value(config.ApiKey),
             deliveryToken: Redacted.value(config.DeliveryToken),
             environment: config.Environment,
@@ -41,7 +43,7 @@ export class ContentstackClient extends Effect.Service<ContentstackClient>()("Co
               preview_token: Redacted.value(config.PreviewToken),
             },
           }),
-        catch: ContentstackClientError.fromError,
+        catch: BuildContentstackClientError.fromError,
       }),
     ),
     Effect.tap(Effect.logInfo("Client created")),

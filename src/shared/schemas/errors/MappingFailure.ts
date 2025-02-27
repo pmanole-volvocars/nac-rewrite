@@ -12,7 +12,7 @@ export class MappingFailure extends Schema.TaggedError<MappingFailure>(T)(
   },
   HttpApiSchema.annotations({
     status: 500,
-    description: "Some data could not be mapped to from another data",
+    description: "Failed to map data from one type to another",
   }),
 ) {
   static readonly Tag = T

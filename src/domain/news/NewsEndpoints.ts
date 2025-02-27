@@ -1,6 +1,8 @@
 import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "@effect/platform"
 import { Schema } from "effect"
+import { Locale } from "src/shared/schemas/Locale"
 import { InvalidLocale } from "src/shared/schemas/errors/InvalidLocale"
+import { MappingFailure } from "src/shared/schemas/errors/MappingFailure"
 import { NotFoundById } from "src/shared/schemas/errors/NotFoundById"
 import { GetNewsResponseV1 } from "./getNews/GetNewsReponseV1"
 import { GetNewsResponseV2 } from "./getNews/GetNewsReponseV2"
@@ -20,7 +22,8 @@ export class NewsEndpoints extends HttpApiGroup.make("NewsEndpoints")
       )
       .setUrlParams(GetNewsUrlParams)
       .addSuccess(GetNewsResponseV1)
-      .addError(InvalidLocale),
+      .addError(InvalidLocale)
+      .addError(MappingFailure),
   )
   .add(
     HttpApiEndpoint.get("getNewsV2", "/v2/news")
@@ -31,15 +34,18 @@ export class NewsEndpoints extends HttpApiGroup.make("NewsEndpoints")
       )
       .setUrlParams(GetNewsUrlParams)
       .addSuccess(GetNewsResponseV2)
-      .addError(InvalidLocale),
+      .addError(InvalidLocale)
+      .addError(MappingFailure),
   )
   .add(
     HttpApiEndpoint.get("getNewsByIdV1", "/v1/news/:id")
       .annotate(OpenApi.Summary, "Get news by ID (v1)")
       .annotate(OpenApi.Description, "Get a news article by ID")
+      .setUrlParams(Schema.Struct({ locale: Locale }))
       .setPath(Schema.Struct({ id: NewsId }))
       .addSuccess(GetNewsByIdResponseV1)
       .addError(InvalidLocale)
-      .addError(NotFoundById),
+      .addError(NotFoundById)
+      .addError(MappingFailure),
     // TODO: Add the spotlight news endpoint
   ) {}

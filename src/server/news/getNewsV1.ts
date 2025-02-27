@@ -2,7 +2,7 @@ import type { HttpApiDecodeError } from "@effect/platform/HttpApiError"
 import { Effect } from "effect"
 import type { GetNewsResponseV1 } from "src/domain/news/getNews/GetNewsReponseV1"
 import { InvalidLocale } from "src/shared/schemas/errors/InvalidLocale"
-import { ContentstackClient } from "src/shared/services/ContentstackClient"
+import { ContentstackClient } from "src/shared/services/ContentstackClient/ContentstackClient"
 
 /** Get News v1 request handler. */
 export function getNewsV1(args: {

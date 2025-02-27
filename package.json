@@ -5,15 +5,17 @@
   "scripts": {
     "dev": "bun --watch ./src/index.ts",
     "test": "bun test",
-    "check-all": "bunx biome check",
-    "check-all:fix": "bunx biome check --write",
-    "check-all:fix-unsafe": "bunx biome check --write --unsafe",
-    "check-staged": "bunx biome check --staged",
-    "check-staged:fix": "bunx biome check --staged --write",
-    "check-staged:fix-unsafe": "bunx biome check --staged --write --unsafe",
-    "check-changed": "bunx biome check --changed",
-    "check-changed:fix": "bunx biome check --changed --write",
-    "check-changed:fix-unsafe": "bunx biome check --changed --write --unsafe"
+    "check-types": "bunx tsc --noEmit --strict",
+    "check-lint": "bunx biome check",
+    "check-lint:fix": "bunx biome check --write",
+    "check-lint:fix-unsafe": "bunx biome check --write --unsafe",
+    "check-lint-staged": "bunx biome check --staged",
+    "check-lint-staged:fix": "bunx biome check --staged --write",
+    "check-lint-staged:fix-unsafe": "bunx biome check --staged --write --unsafe",
+    "check-lint-changed": "bunx biome check --changed",
+    "check-lint-changed:fix": "bunx biome check --changed --write",
+    "check-lint-changed:fix-unsafe": "bunx biome check --changed --write --unsafe",
+    "check-all": "bun run check-lint && bun run check-types"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
