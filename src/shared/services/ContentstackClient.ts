@@ -3,21 +3,6 @@ import { Effect, Redacted, pipe } from "effect"
 import { ContentstackConfig } from "src/config/ContentstackConfig"
 import { ContentstackClientError } from "./ContentstackClientError"
 
-const createClient = (config: ContentstackConfig) =>
-  Effect.try({
-    try: () =>
-      cs.stack({
-        apiKey: Redacted.value(config.ApiKey),
-        deliveryToken: Redacted.value(config.DeliveryToken),
-        environment: config.Environment,
-        live_preview: {
-          enable: false, // not implemented yet
-          preview_token: Redacted.value(config.PreviewToken),
-        },
-      }),
-    catch: ContentstackClientError.fromError,
-  })
-
 /**
  * Contentstack Content Delivery API Client `Effect.Service` Singleton.
  *
@@ -42,5 +27,24 @@ const createClient = (config: ContentstackConfig) =>
  */
 export class ContentstackClient extends Effect.Service<ContentstackClient>()("ContentstackClient", {
   accessors: true,
-  effect: pipe(ContentstackConfig, Effect.andThen(createClient)),
+  effect: pipe(
+    ContentstackConfig,
+    Effect.andThen((config: ContentstackConfig) =>
+      Effect.try({
+        try: () =>
+          cs.stack({
+            apiKey: Redacted.value(config.ApiKey),
+            deliveryToken: Redacted.value(config.DeliveryToken),
+            environment: config.Environment,
+            live_preview: {
+              enable: false, // not implemented yet
+              preview_token: Redacted.value(config.PreviewToken),
+            },
+          }),
+        catch: ContentstackClientError.fromError,
+      }),
+    ),
+    Effect.tap(Effect.logInfo("Client created")),
+    Effect.withLogSpan("ContentstackClient"),
+  ),
 }) {}

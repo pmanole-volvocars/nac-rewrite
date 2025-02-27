@@ -19,7 +19,7 @@ import { isDev } from "src/shared/utils/isDev"
  *   program.pipe(Effect.provide(MainLayer))
  * )
  */
-const ClearAllLoggers = Layer.scopedDiscard(
+export const ClearAllLoggers = Layer.scopedDiscard(
   Effect.locallyScoped(FiberRef.currentLoggers, HashSet.empty()),
 )
 

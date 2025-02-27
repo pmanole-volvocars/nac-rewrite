@@ -25,8 +25,6 @@ export interface ContentstackConfig {
 export const ContentstackConfig: Effect.Effect<ContentstackConfig, ConfigError.ConfigError, never> =
   Effect.cached(
     Effect.gen(function* () {
-      yield* Effect.logInfo("Loading Contentstack configuration")
-
       return {
         ApiKey: yield* Config.nonEmptyString("CS_NEWSANDCOMMS_STACK_API_KEY").pipe(
           Config.redacted<string>,
@@ -53,4 +51,8 @@ export const ContentstackConfig: Effect.Effect<ContentstackConfig, ConfigError.C
         ),
       }
     }),
-  ).pipe(Effect.flatten, Effect.withLogSpan("ContentstackConfig"))
+  ).pipe(
+    Effect.flatten,
+    Effect.tap((config) => Effect.logInfo("Client configuration loaded")),
+    Effect.withLogSpan("ContentstackConfig"),
+  )
