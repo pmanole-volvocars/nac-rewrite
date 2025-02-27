@@ -25,5 +25,10 @@ const ClearAllLoggers = Layer.scopedDiscard(
 
 const OurLogger = isDev() ? Logger.structured : Logger.json
 
-/** Main logger Layer that will provide all logging output. */
-export const MainLogger = Layer.provide(ClearAllLoggers)(OurLogger)
+/**
+ * Main logging Layer.
+ *
+ * Writes logs to standard output. Uses JSON format in production and a more human-readable
+ * structured format when running in development mode.
+ */
+export const LoggingLayer = Layer.provide(ClearAllLoggers)(OurLogger)

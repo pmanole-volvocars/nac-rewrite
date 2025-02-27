@@ -1,6 +1,6 @@
 import { Config, type ConfigError, Effect, type Redacted } from "effect"
 
-interface ContentstackConfig {
+export interface ContentstackConfig {
   /** API Key for the current Stack. */
   ApiKey: Redacted.Redacted<string>
   /** Content branch (e.g., main, prod, qa, etc.) */
@@ -15,6 +15,7 @@ interface ContentstackConfig {
   Region: string
 }
 
+// TODO: maybe can be replaced with Effect.Service instead of cached effect?
 /**
  * An effect that returns the Contentstack configuration.
  *
