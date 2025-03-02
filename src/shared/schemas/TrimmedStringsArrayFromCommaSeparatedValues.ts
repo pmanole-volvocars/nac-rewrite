@@ -11,7 +11,7 @@ export const TrimmedStringsArrayFromCommaSeparatedValues = Schema.transform(
   Schema.Array(Schema.Trim),
   {
     strict: true,
-    decode: (i) => i.split(","),
-    encode: (a) => a.join(","),
+    decode: (inputStr) => inputStr.split(","),
+    encode: (strArray) => strArray.join(","),
   },
 )
