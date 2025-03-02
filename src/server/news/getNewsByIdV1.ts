@@ -15,7 +15,7 @@ import { parseContentstackClientError } from "src/shared/utils/parseContentstack
 /** Get News By ID v1 request handler. */
 export const getNewsByIdV1 = (args: {
   readonly path: { readonly id: NewsId }
-  readonly urlParams: { readonly locale: "de-de" | "en-en" }
+  readonly urlParams: { readonly locale: string }
 }) =>
   Effect.gen(function* () {
     const client = yield* ContentstackClient
