@@ -9,6 +9,8 @@ import { GetNewsResponseV2 } from "./getNews/GetNewsReponseV2"
 import { GetNewsUrlParams } from "./getNews/GetNewsUrlParams"
 import { GetNewsByIdResponseV1 } from "./getNewsById/GetNewsByIdResponseV1"
 import { NewsId } from "./schemas/NewsId"
+import { BadGateway } from "src/shared/schemas/errors/BadGateway"
+import { TooManyRequests } from "src/shared/schemas/errors/TooManyRequests"
 
 export class NewsEndpoints extends HttpApiGroup.make("NewsEndpoints")
   .annotate(OpenApi.Title, "News API")
@@ -44,8 +46,10 @@ export class NewsEndpoints extends HttpApiGroup.make("NewsEndpoints")
       .setUrlParams(Schema.Struct({ locale: Locale }))
       .setPath(Schema.Struct({ id: NewsId }))
       .addSuccess(GetNewsByIdResponseV1)
+      .addError(BadGateway)
       .addError(InvalidLocale)
+      .addError(MappingFailure)
       .addError(NotFoundById)
-      .addError(MappingFailure),
+      .addError(TooManyRequests),
     // TODO: Add the spotlight news endpoint
   ) {}

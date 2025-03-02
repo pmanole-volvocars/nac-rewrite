@@ -3,7 +3,7 @@ import { Data } from "effect"
 const T = "CsUnknownError"
 
 /**
- * We don't know or handle a particular error type that the Contentstack client threw.
+ * We couldn't determine the particular error type that the Contentstack client threw.
  *
  * We wrap that error and store it in this error's `cause` property, for logging purposes.
  *

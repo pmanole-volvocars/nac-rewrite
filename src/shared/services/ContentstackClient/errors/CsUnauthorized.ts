@@ -1,8 +1,8 @@
 import { Data } from "effect"
 
-const T = "CsEntryNotFoundById"
+const T = "CsUnauthorized"
 
-export class CsNotFoundById extends Data.TaggedError(T)<{
+export class CsUnauthorized extends Data.TaggedError(T)<{
   message: string
   cause?: unknown | undefined
 }> {

@@ -3,10 +3,12 @@ import { GetNewsByIdResponseV1 } from "src/domain/news/getNewsById/GetNewsByIdRe
 import { NewsArticle } from "src/domain/news/schemas/NewsArticle"
 import type { NewsId } from "src/domain/news/schemas/NewsId"
 import type { CsNewsEntry } from "src/shared/schemas/contentstack/CsNewsEntry"
+import { BadGateway } from "src/shared/schemas/errors/BadGateway"
 import { InvalidLocale } from "src/shared/schemas/errors/InvalidLocale"
 import { NotFoundById } from "src/shared/schemas/errors/NotFoundById"
+import { TooManyRequests } from "src/shared/schemas/errors/TooManyRequests"
 import { ContentstackClient } from "src/shared/services/ContentstackClient/ContentstackClient"
-import { parseContentstackClientErrors } from "src/shared/utils/parseContentstackClientErrors"
+import { parseContentstackClientError } from "src/shared/utils/parseContentstackClientError"
 
 // Test ID for QA: blt0da5a2d4812d7fd2
 
@@ -17,29 +19,30 @@ export const getNewsByIdV1 = (args: {
 }) =>
   Effect.gen(function* () {
     const client = yield* ContentstackClient
-    const getCsNewsEntry = Effect.tryPromise({
-      try: async () => {
-        const entry = client.contentType("news").entry(args.path.id).locale(args.urlParams.locale)
-        const promise: Promise<CsNewsEntry> = entry.fetch<CsNewsEntry>()
-        return promise // TODO: What if it's not found? will it throw or return undefined?
-      },
-      catch: parseContentstackClientErrors,
+
+    const getContentstackNewsEntry = Effect.tryPromise({
+      try: () =>
+        client
+          .contentType("news")
+          .entry(args.path.id)
+          .locale(args.urlParams.locale)
+          .fetch<CsNewsEntry>(),
+      catch: parseContentstackClientError,
     }).pipe(
-      Effect.catchTag("CsEntryNotFoundById", (error) =>
-        NotFoundById.make({
-          // TODO: check if MFE actually touches or reads any errorMessage fields, and if not, refactor to message, the default for Error which is what taggedError inherits
-          errorMessage: error.message,
-          id: args.path.id,
-        }),
-      ),
-      // TODO: could write a custom constructor on the new error type, e.g., DownstreamServerError.fromCsUnknownError(error)
-      Effect.catchTag("CsUnknownError", (error) =>
-        // FIX: temporary use of invalid locale, need an explict internal server error, or maybe to be more informative, a 502 downstream service error
-        InvalidLocale.make({ errorMessage: error.message }),
-      ),
+      Effect.tapError((contentstackError) => Effect.logError(contentstackError)),
+      Effect.catchTags({
+        // TODO: check if MFE actually touches or reads any errorMessage fields, and if not,
+        // refactor to message, the default for Error class, which is what taggedError inherits.
+        CsBadRequest: (error) => BadGateway.make({ errorMessage: error.message }),
+        CsLanguageNotFound: (error) => InvalidLocale.make({ errorMessage: error.message }),
+        CsNotFound: (error) => NotFoundById.make({ errorMessage: error.message, id: args.path.id }),
+        CsTooManyRequests: (error) => TooManyRequests.make({ errorMessage: error.message }),
+        CsUnauthorized: (error) => BadGateway.make({ errorMessage: error.message }),
+        CsUnknownError: (error) => BadGateway.make({ errorMessage: error.message }),
+      }),
     )
 
-    const csNewsEntry = yield* getCsNewsEntry
+    const csNewsEntry = yield* getContentstackNewsEntry
     const newsArticle = yield* NewsArticle.fromCsNewsEntry(csNewsEntry)
 
     return GetNewsByIdResponseV1.make({ entries: [newsArticle] })

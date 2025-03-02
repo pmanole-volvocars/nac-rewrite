@@ -1,11 +1,11 @@
 import { HttpApiBuilder, HttpApiSwagger, HttpMiddleware } from "@effect/platform"
 import { BunHttpServer } from "@effect/platform-bun"
 import { Effect, Layer } from "effect"
+import { port } from "src/config/constants"
 import { ContentstackClient } from "src/shared/services/ContentstackClient/ContentstackClient"
 import { ApiLive } from "./ApiLive"
 import { LoggingLayer } from "./Logging"
 
-const port = 3000
 const HttpServer = BunHttpServer.layer({
   maxRequestBodySize: 1024 * 1024 * 10, // 10MB
   port,
