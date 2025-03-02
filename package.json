@@ -30,7 +30,9 @@
     "@effect/opentelemetry": "^0.44.0",
     "@effect/platform": "^0.77.2",
     "@effect/platform-bun": "^0.57.2",
-    "effect": "^3.13.2"
+    "@elastic/ecs-pino-format": "^1.5.0",
+    "effect": "^3.13.2",
+    "pino": "^9.6.0"
   },
   "trustedDependencies": ["@parcel/watcher"]
 }
