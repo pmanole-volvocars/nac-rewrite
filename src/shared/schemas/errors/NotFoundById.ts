@@ -9,7 +9,6 @@ export class NotFoundById extends Schema.TaggedError<NotFoundById>(T)(
   {
     /** The ID of the entity that was not found. */
     id: Schema.String,
-    /** Friendly error message to show to the user. */
     errorMessage: Schema.String,
   } satisfies MinimumErrorResponseStructure,
   HttpApiSchema.annotations({

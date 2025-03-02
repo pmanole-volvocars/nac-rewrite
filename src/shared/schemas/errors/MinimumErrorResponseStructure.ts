@@ -25,4 +25,8 @@ import type { Schema } from "effect"
  * } satisfies MinimumErrorResponseStructure) // <- note the use of `satisfies`
  * {}
  */
-export type MinimumErrorResponseStructure = { errorMessage: Schema.String; [K: string]: unknown }
+export interface MinimumErrorResponseStructure {
+  /** Friendly error message to show to the user. */
+  errorMessage: Schema.String
+  [K: string]: unknown
+}

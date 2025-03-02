@@ -3,7 +3,12 @@ import { Schema } from "effect"
 
 const T = "MappingFailure"
 
-/** An error to map from one type to another. */
+/**
+ * Error mapping from one type to another.
+ *
+ * For example, if persistence models (e.g., Contentstack entry models) have changed, but the
+ * mapping code or constructors have not been updated.
+ */
 export class MappingFailure extends Schema.TaggedError<MappingFailure>(T)(
   T,
   {

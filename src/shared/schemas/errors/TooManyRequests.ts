@@ -7,7 +7,6 @@ const T = "TooManyRequests"
 export class TooManyRequests extends Schema.TaggedError<TooManyRequests>(T)(
   T,
   {
-    /** Friendly error message to show to the user. */
     errorMessage: Schema.String,
   } satisfies MinimumErrorResponseStructure,
   HttpApiSchema.annotations({
