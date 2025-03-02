@@ -1,16 +1,16 @@
 import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "@effect/platform"
 import { Schema } from "effect"
 import { Locale } from "src/shared/schemas/Locale"
+import { BadGateway } from "src/shared/schemas/errors/BadGateway"
 import { InvalidLocale } from "src/shared/schemas/errors/InvalidLocale"
 import { MappingFailure } from "src/shared/schemas/errors/MappingFailure"
 import { NotFoundById } from "src/shared/schemas/errors/NotFoundById"
+import { TooManyRequests } from "src/shared/schemas/errors/TooManyRequests"
 import { GetNewsResponseV1 } from "./getNews/GetNewsReponseV1"
 import { GetNewsResponseV2 } from "./getNews/GetNewsReponseV2"
 import { GetNewsUrlParams } from "./getNews/GetNewsUrlParams"
 import { GetNewsByIdResponseV1 } from "./getNewsById/GetNewsByIdResponseV1"
 import { NewsId } from "./schemas/NewsId"
-import { BadGateway } from "src/shared/schemas/errors/BadGateway"
-import { TooManyRequests } from "src/shared/schemas/errors/TooManyRequests"
 
 export class NewsEndpoints extends HttpApiGroup.make("NewsEndpoints")
   .annotate(OpenApi.Title, "News API")

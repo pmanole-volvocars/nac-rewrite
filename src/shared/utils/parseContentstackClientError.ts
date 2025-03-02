@@ -1,9 +1,9 @@
 import { CsNotFound } from "src/shared/services/ContentstackClient/errors/CsNotFound"
 import { CsUnknownError } from "src/shared/services/ContentstackClient/errors/CsUnknownError"
 import { CsBadRequest } from "../services/ContentstackClient/errors/CsBadRequest"
+import { CsLanguageNotFound } from "../services/ContentstackClient/errors/CsLanguageNotFound"
 import { CsTooManyRequests } from "../services/ContentstackClient/errors/CsTooManyRequests"
 import { CsUnauthorized } from "../services/ContentstackClient/errors/CsUnauthorized"
-import { CsLanguageNotFound } from "../services/ContentstackClient/errors/CsLanguageNotFound"
 
 /**
  * The client provided by the Contentstack SDK has a very "peculiar" way of
