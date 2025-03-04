@@ -1,8 +1,8 @@
 import { Schema } from "effect"
 
-const T = "CsTaxonomy"
+const tag = "CsTaxonomy"
 
-export class CsTaxonomy extends Schema.Class<CsTaxonomy>(T)({
+export class CsTaxonomy extends Schema.Class<CsTaxonomy>(tag)({
   taxonomy_uid: Schema.String,
   term_uid: Schema.String,
 }) {}

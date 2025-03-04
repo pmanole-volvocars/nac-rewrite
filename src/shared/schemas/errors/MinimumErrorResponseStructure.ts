@@ -19,7 +19,7 @@ import type { Schema } from "effect"
  * other fields if they want to.
  *
  * @example
- * export class InvalidLocale extends Schema.TaggedError<InvalidLocale>(T)(T, {
+ * export class InvalidLocale extends Schema.TaggedError<InvalidLocale>(tag)(T, {
  *   errorMessage: Schema.String, // <- enforced by MinimumErrorResponseStructure
  *   cause: Schema.optional(Schema.Unknown), // <- additional field that this Schema can still add
  * } satisfies MinimumErrorResponseStructure) // <- note the use of `satisfies`

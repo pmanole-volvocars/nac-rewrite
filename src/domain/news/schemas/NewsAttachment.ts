@@ -3,9 +3,9 @@ import { Effect, Schema } from "effect"
 import type { CsBaseAsset } from "src/shared/schemas/contentstack/CsBaseAsset"
 import { MappingFailure } from "src/shared/schemas/errors/MappingFailure"
 
-const T = "NewsAttachment"
+const tag = "NewsAttachment"
 
-export class NewsAttachment extends Schema.Class<NewsAttachment>(T)({
+export class NewsAttachment extends Schema.Class<NewsAttachment>(tag)({
   contentType: Schema.String,
   fileName: Schema.String,
   fileSize: Schema.String,

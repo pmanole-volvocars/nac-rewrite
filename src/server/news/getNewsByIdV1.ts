@@ -9,6 +9,7 @@ import { NotFoundById } from "src/shared/schemas/errors/NotFoundById"
 import { TooManyRequests } from "src/shared/schemas/errors/TooManyRequests"
 import { ContentstackClient } from "src/shared/services/ContentstackClient/ContentstackClient"
 import { parseContentstackClientError } from "src/shared/utils/parseContentstackClientError"
+import { CsContentTypeUids } from "../constants"
 
 // Test ID for QA: blt0da5a2d4812d7fd2
 
@@ -23,7 +24,7 @@ export const getNewsByIdV1 = (args: {
     const getContentstackNewsEntry = Effect.tryPromise({
       try: () =>
         client
-          .contentType("news")
+          .contentType(CsContentTypeUids.News)
           .entry(args.path.id)
           .locale(args.urlParams.locale)
           .fetch<CsNewsEntry>(),

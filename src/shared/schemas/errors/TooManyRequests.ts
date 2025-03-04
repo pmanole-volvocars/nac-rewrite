@@ -2,10 +2,10 @@ import { HttpApiSchema } from "@effect/platform"
 import { Schema } from "effect"
 import type { MinimumErrorResponseStructure } from "src/shared/schemas/errors/MinimumErrorResponseStructure"
 
-const T = "TooManyRequests"
+const tag = "TooManyRequests"
 
-export class TooManyRequests extends Schema.TaggedError<TooManyRequests>(T)(
-  T,
+export class TooManyRequests extends Schema.TaggedError<TooManyRequests>(tag)(
+  tag,
   {
     errorMessage: Schema.String,
   } satisfies MinimumErrorResponseStructure,
@@ -14,5 +14,5 @@ export class TooManyRequests extends Schema.TaggedError<TooManyRequests>(T)(
     description: "Bad gateway",
   }),
 ) {
-  static readonly Tag = T
+  static readonly Tag = tag
 }

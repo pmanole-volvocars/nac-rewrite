@@ -1,8 +1,8 @@
 import { Schema } from "effect"
 import { NewsArticle } from "../schemas/NewsArticle"
 
-const T = "GetNewsByIdResponseV1"
+const tag = "GetNewsByIdResponseV1"
 
-export class GetNewsByIdResponseV1 extends Schema.Class<GetNewsByIdResponseV1>(T)({
+export class GetNewsByIdResponseV1 extends Schema.Class<GetNewsByIdResponseV1>(tag)({
   entries: Schema.Array(NewsArticle),
 }) {}

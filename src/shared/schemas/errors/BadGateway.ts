@@ -2,10 +2,10 @@ import { HttpApiSchema } from "@effect/platform"
 import { Schema } from "effect"
 import type { MinimumErrorResponseStructure } from "src/shared/schemas/errors/MinimumErrorResponseStructure"
 
-const T = "BadGateway"
+const tag = "BadGateway"
 
-export class BadGateway extends Schema.TaggedError<BadGateway>(T)(
-  T,
+export class BadGateway extends Schema.TaggedError<BadGateway>(tag)(
+  tag,
   {
     errorMessage: Schema.String,
   } satisfies MinimumErrorResponseStructure,
@@ -14,5 +14,5 @@ export class BadGateway extends Schema.TaggedError<BadGateway>(T)(
     description: "Bad gateway (An error occurred in a downstream service)",
   }),
 ) {
-  static readonly Tag = T
+  static readonly Tag = tag
 }

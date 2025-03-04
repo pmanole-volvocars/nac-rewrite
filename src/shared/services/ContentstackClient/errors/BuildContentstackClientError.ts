@@ -1,12 +1,12 @@
 import { Data } from "effect"
 
-const T = "BuildContentstackClientError"
+const tag = "BuildContentstackClientError"
 
-export class BuildContentstackClientError extends Data.TaggedError(T)<{
+export class BuildContentstackClientError extends Data.TaggedError(tag)<{
   message: string
   cause?: unknown | undefined
 }> {
-  static readonly Tag = T
+  static readonly Tag = tag
 
   /**
    * Wraps the actual error as a `cause`, so it can be logged and returns a new instance of this

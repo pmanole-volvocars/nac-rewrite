@@ -8,8 +8,8 @@ import { CsPublishDetails } from "./CsPublishDetails"
  * Contentstack.
  *
  * @example
- * const T = "DocumentEntry"
- * export class DocumentEntry extends Schema.Class<DocumentEntry>(T)({
+ * const tag = "DocumentEntry"
+ * export class DocumentEntry extends Schema.Class<DocumentEntry>(tag)({
  *   ...baseEntryFields,
  *   // any additional fields:
  *   body: Schema.String,

@@ -1,10 +1,10 @@
 import { Data } from "effect"
 
-const T = "CsNotFound"
+const tag = "CsNotFound"
 
-export class CsNotFound extends Data.TaggedError(T)<{
+export class CsNotFound extends Data.TaggedError(tag)<{
   message: string
   cause?: unknown | undefined
 }> {
-  static readonly Tag = T
+  static readonly Tag = tag
 }

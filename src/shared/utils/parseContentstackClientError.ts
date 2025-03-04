@@ -89,6 +89,8 @@ export function parseContentstackClientError(
               cause: parsedError,
             })
           }
+          // FIXME: this isn't just for not found but also for invalid regex like for search==+!@#$%^&*(
+          // Need to return CsBadRequest:
           return new CsNotFound({
             message: `Contentstack 422: ${parsedErrorMessage}`,
             cause: parsedError,

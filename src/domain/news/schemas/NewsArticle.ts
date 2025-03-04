@@ -2,40 +2,37 @@ import { Effect, Schema, pipe } from "effect"
 import type { CsNewsEntry } from "src/shared/schemas/contentstack/CsNewsEntry"
 import { MappingFailure } from "src/shared/schemas/errors/MappingFailure"
 import { NewsAttachment } from "./NewsAttachment"
-import { NewsCategory, NewsCategoryFromCsTaxonomy } from "./NewsCategory"
+import { NewsCategory } from "./NewsCategory"
 import { NewsId, NewsIdFromString } from "./NewsId"
 
-const T = "NewsArticle"
+const tag = "NewsArticle"
 
-export class NewsArticle extends Schema.Class<NewsArticle>(T)({
+export class NewsArticle extends Schema.Class<NewsArticle>(tag)({
   attachments: Schema.optional(Schema.Array(NewsAttachment)),
   author: Schema.String,
   body: Schema.String,
-  categories: Schema.Array(NewsCategory),
+  categories: Schema.Array(NewsCategory.NewsCategory),
   description: Schema.String,
   /** The header image is optional because content publishers can choose to delete already published assets. */
   headerImage: Schema.optional(NewsAttachment),
   id: NewsId,
   locale: Schema.String,
-  publishedAt: Schema.String,
+  /** Maps from `entry.head.release_date`, not from `entry.publish_details.time`. */
+  publishedAt: Schema.optional(Schema.String),
   tags: Schema.Array(Schema.String),
   title: Schema.String,
 }) {
   /** Tries to map from a Contentstack news entry. */
   static fromCsNewsEntry(entry: CsNewsEntry): Effect.Effect<NewsArticle, MappingFailure> {
     return Effect.gen(function* () {
-      if (!entry.head.header_image) {
-        // Content publisher possibly deleted the header image asset after it was linked and published:
-        return yield* new MappingFailure({
-          errorMessage: `Failed to map \`${T}\` from a Contentstack news entry: \`head.header_image\` was undefined.`,
-        })
-      }
-      const headerImage = yield* NewsAttachment.fromBaseAsset(entry.head.header_image)
-
       const id = yield* NewsIdFromString(entry.uid)
 
+      const headerImage = entry.head.header_image
+        ? yield* NewsAttachment.fromBaseAsset(entry.head.header_image)
+        : undefined
+
       const categories = entry.taxonomies
-        ? yield* pipe(entry.taxonomies, Effect.forEach(NewsCategoryFromCsTaxonomy))
+        ? yield* pipe(entry.taxonomies, Effect.forEach(NewsCategory.fromCsTaxonomy))
         : []
 
       const attachments = entry.attachments
@@ -60,7 +57,7 @@ export class NewsArticle extends Schema.Class<NewsArticle>(T)({
       } catch (error) {
         return yield* Effect.fail(
           new MappingFailure({
-            errorMessage: `Failed to map \`${T}\` from a Contentstack news entry.`,
+            errorMessage: `Failed to map \`${tag}\` from a Contentstack news entry.`,
             cause: error,
           }),
         )

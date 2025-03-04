@@ -3,9 +3,9 @@ import { CsBaseAsset } from "./CsBaseAsset"
 import { CsTaxonomy } from "./CsTaxonomy"
 import { baseEntryFields } from "./baseEntryFields"
 
-const T = "CsNewsEntry"
+const tag = "CsNewsEntry"
 
-export class CsNewsEntry extends Schema.Class<CsNewsEntry>(T)({
+export class CsNewsEntry extends Schema.Class<CsNewsEntry>(tag)({
   ...baseEntryFields,
 
   // Additional fields:

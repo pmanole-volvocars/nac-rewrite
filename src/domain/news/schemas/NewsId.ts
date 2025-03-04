@@ -1,10 +1,10 @@
 import { Effect, Schema } from "effect"
 import { MappingFailure } from "src/shared/schemas/errors/MappingFailure"
 
-const T = "NewsId"
+const tag = "NewsId"
 
 export const NewsId = Schema.compose(Schema.Trim, Schema.NonEmptyString)
-  .pipe(Schema.brand(T))
+  .pipe(Schema.brand(tag))
   .annotations({
     title: "NewsId",
     description: "News Article ID",
