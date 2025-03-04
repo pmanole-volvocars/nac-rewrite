@@ -50,6 +50,6 @@ export class NewsEndpoints extends HttpApiGroup.make("NewsEndpoints")
       .addError(InvalidLocale)
       .addError(MappingFailure)
       .addError(NotFoundById)
-      .addError(TooManyRequests),
+      .addError(TooManyRequests), // TODO: move common errors like TooManyRequests to top level (group or API) to get rid of code duplication
     // TODO: Add the spotlight news endpoint
   ) {}
